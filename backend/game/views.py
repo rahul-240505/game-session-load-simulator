@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.core.cache import cache
-from .models import Inventory, Item # <-- Import Item
+from .models import Inventory, Item
 from .serializers import InventorySerializer
 
 class InventoryView(APIView):

@@ -1,5 +1,5 @@
 services:
-  # Our Django Backend Service
+  # Django Backend Service
   backend:
     build: .
     container_name: backend
@@ -14,7 +14,7 @@ services:
       redis:
         condition: service_started
 
-  # Our MySQL Database Service
+  # MySQL Database Service
   db:
     image: mysql:8.0
     container_name: db
@@ -27,18 +27,51 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-    healthcheck: # <-- This is the new section
+    healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Our Redis Caching Service
+  # Redis Caching Service
   redis:
     image: redis:6.2-alpine
     container_name: redis
     ports:
       - "6379:6379"
+
+  # --- LOCUST SERVICE ---
+  locust:
+    build: ./locust_docker 
+    container_name: locust
+    command: -f /mnt/locust/locustfile.py --host http://backend:8000
+    volumes:
+      - ./load_tests:/mnt/locust
+    ports:
+      - "8089:8089" # Web UI
+      - "8090:8090" # Exporter port
+    depends_on:
+      - backend
+
+  # --- MONITORING SERVICES ---
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - locust 
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:11.1.2
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
 
 volumes:
   mysql_data:
