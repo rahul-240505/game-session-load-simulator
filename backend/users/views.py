@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User
 from .serializers import UserSerializer
-import time
+#import time (For perfomeance testing simulation)
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -12,10 +12,13 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    def list(self, request, *args, **kwargs):
-        print("Simulating a slow database query...")
-        time.sleep(1)
-        return super().list(request, *args, **kwargs)
+    """ 
+    Uncomment the below method to simulate a slow database query for performance testing.
+    """
+    # def list(self, request, *args, **kwargs):
+    #     print("Simulating a slow database query...")
+    #     time.sleep(1)
+    #     return super().list(request, *args, **kwargs)
 
     def get_permissions(self):
         """
