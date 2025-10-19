@@ -41,8 +41,10 @@ Setup: 10 concurrent users with a spawn rate of 2 users/sec.
 Result: The API demonstrated excellent performance, with a 95th percentile latency of just 12ms for authenticated requests. The system was stable with 0 failures.
 
 Statistics (10 Users):
+![images/low-load_stats]
 
 Charts (10 Users):
+![images/low-load_charts]
 
 Test B: High-Load Stress Test
 
@@ -53,19 +55,24 @@ Setup: 100 concurrent users with a spawn rate of 10 users/sec.
 Result: The API remained highly responsive and stable, stabilizing at ~50 requests per second with 0 failures. The p99 latency for authenticated requests remained exceptionally low at under 50ms.
 
 Statistics (100 Users):
+![images/high-load_stats]
 
 Charts (100 Users):
+![images/high-load_charts]
 
 Test C: Bottleneck Simulation & Analysis
 
 To demonstrate root cause analysis, a 1-second delay (time.sleep(1)) was intentionally introduced into the user list API view to simulate a slow database query. The initial 10-user test was run again to precisely measure the impact.
+![images/delay_simulation]
 
 Setup: 10 concurrent users with a spawn rate of 2 users/sec (with bottleneck).
 
 Result: The impact was immediate and dramatic. The p99 latency for the affected endpoint spiked to over 1000ms. The Locust charts clearly visualized this consistent bottleneck, proving the ability to identify and quantify the exact impact of a performance regression.
 
 Statistics (10 Users with Delay):
+![images/bottleneck_stats]
 
 Charts (10 Users with Delay):
+![images/bottleneck_charts]
 
 This three-stage analysis demonstrates a complete end-to-end system testing workflow, from establishing a baseline to identifying and proving the impact of a specific performance issue.
