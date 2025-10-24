@@ -1,0 +1,32 @@
+# docker-compose.local.yml (for local testing tools)
+services:
+  # --- LOCUST SERVICE ---
+  locust:
+    build: ./locust_docker # Use the Dockerfile in locust_docker
+    container_name: locust_local
+    command: -f /mnt/locust/locustfile.py --host http://15.207.193.10:80
+    volumes:
+      - ./load_tests:/mnt/locust
+    ports:
+      - "8089:8089" # Locust Web UI
+      - "8090:8090" # Locust Prometheus Exporter port
+
+  # --- MONITORING SERVICES ---
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: prometheus_local
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090" # Prometheus Web UI
+    depends_on:
+      - locust # Wait for locust to start
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:11.1.2
+    container_name: grafana_local
+    ports:
+      - "3000:3000" # Grafana Web UI
+    depends_on:
+      - prometheus # Wait for prometheus to start
