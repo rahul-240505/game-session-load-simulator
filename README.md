@@ -137,24 +137,3 @@ This project simulates thousands of concurrent game players interacting with a b
 ![Bottleneck Impact Charts](images/bottleneck_charts.png)
 
 ---
-
-## 📄 Resume Impact
-
-This project demonstrates practical experience in:
-* Backend API Development (Django REST Framework)
-* Database Management (MySQL) & Caching (Redis)
-* Distributed Load Testing (Locust)
-* Performance Monitoring & Visualization (Prometheus, Grafana)
-* Containerization (Docker, Docker Compose)
-* Cloud Deployment (AWS EC2)
-* System Analysis & Debugging
-
----
-
-##🔮 Future Improvements (Optional)
-
-* Integrate Redis caching more deeply.
-* Add more complex Locust user scenarios (trading, different player types).
-* Implement backend monitoring (e.g., using `django-prometheus`).
-* Set up HTTPS using Certbot/Let's Encrypt with Nginx.
-* Automate deployment using CI/CD pipelines.
